@@ -106,11 +106,14 @@
 
     let clicker_div_timeout_id;
 
+    let game_in_progress;
+
     function body_onload() {
         clicker_div_attempt = 0;
         clicker_div_attempt_reflex_table = [0,0,0,0,0];
 
         document.getElementById('statistics').style.visibility='hidden';
+        game_in_progress = false;
     }
 
     function button_start() {
@@ -125,6 +128,8 @@
         time_to_stop *= 1000; // miliseconds
 
         clicker_div_timeout_id = setTimeout(change_bg_color, time_to_stop);
+
+        game_in_progress = true;
     }
     
     function button_stop() {
@@ -132,6 +137,7 @@
         clicker_div_attempt = 0;
         clicker_div_attempt_reflex_table = [0,0,0,0,0];
         document.getElementById('statistics').style.visibility='hidden';
+        game_in_progress = false;
     }
 
     function change_bg_color() {
@@ -142,6 +148,9 @@
     }
 
     function clicker_div_clicked() {
+        if (game_in_progress === false) {
+            return;
+        }
         
         document.getElementById('statistics').style.visibility='visible';
 
@@ -163,6 +172,7 @@
 
             clicker_div_attempt = 0;
             clicker_div_attempt_reflex_table = [0,0,0,0,0];
+            game_in_progress = false;
         } else {
 
             const randomNumberBetwen0And1 = Math.random();
