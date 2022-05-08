@@ -101,12 +101,13 @@
 
     let clicker_div_time_started_ms;
     let clicker_div_attempt;
-    let clicker_div_max_attempts = 2;
+    let clicker_div_max_attempts = 5;
     let clicker_div_attempt_reflex_table;
 
     let clicker_div_timeout_id;
 
     let game_in_progress;
+    let timer_in_progress;
 
     function body_onload() {
         clicker_div_attempt = 0;
@@ -114,6 +115,7 @@
 
         document.getElementById('statistics').style.visibility='hidden';
         game_in_progress = false;
+        timer_in_progress = false;
     }
 
     function button_start() {
@@ -130,6 +132,7 @@
         clicker_div_timeout_id = setTimeout(change_bg_color, time_to_stop);
 
         game_in_progress = true;
+        timer_in_progress = true;
     }
     
     function button_stop() {
@@ -138,6 +141,7 @@
         clicker_div_attempt_reflex_table = [0,0,0,0,0];
         document.getElementById('statistics').style.visibility='hidden';
         game_in_progress = false;
+        timer_in_progress = false;
     }
 
     function change_bg_color() {
@@ -145,10 +149,11 @@
         document.getElementById('clicker_div').classList.add('green');
         const now = new Date();
         clicker_div_time_started_ms = now.getTime();
+        timer_in_progress = false;
     }
 
     function clicker_div_clicked() {
-        if (game_in_progress === false) {
+        if (game_in_progress === false || timer_in_progress === true) {
             return;
         }
         
@@ -181,6 +186,7 @@
             time_to_stop *= 1000; // miliseconds
 
             clicker_div_timeout_id = setTimeout(change_bg_color, time_to_stop);
+            timer_in_progress = true;
 
             update_result_table();
         }
